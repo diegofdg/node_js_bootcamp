@@ -5,8 +5,11 @@ import usuarioRoutes from './routes/usuarioRoutes.js';
 const app = express();
 
 // Habilitar Pug
-app.set('view engine', 'pug')
-app.set('views', './views')
+app.set('view engine', 'pug');
+app.set('views', './views');
+
+// Carpeta Pública
+app.use(express.static('public'));
 
 // Routing
 app.use('/auth', usuarioRoutes);
