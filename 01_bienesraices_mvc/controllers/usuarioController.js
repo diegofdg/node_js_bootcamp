@@ -27,6 +27,30 @@ const autenticar = async (req, res) => {
             errores: resultado.array()
         });
     }    
+
+    const { email, password} = req.body;
+
+    // Comprobar si el usuario existe
+    const usuario = await Usuario.findOne({ where: { email } });
+    if(!usuario) {
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+            csrfToken : req.csrfToken(),
+            errores: [{msg: 'El Usuario No Existe'}]
+        });
+    }
+
+    // Comprobar si el usuario esta confirmado
+    if(!usuario.confirmado) {
+        return res.render('auth/login', {
+            pagina: 'Iniciar Sesión',
+            csrfToken : req.csrfToken(),
+            errores: [{msg: 'Tu Cuenta no ha sido Confirmada'}]
+        })
+    }
+
+    // Revisar el password
+    
 }
 
 const formularioRegistro = (req, res) => {
