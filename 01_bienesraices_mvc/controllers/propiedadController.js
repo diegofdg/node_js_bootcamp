@@ -1,6 +1,7 @@
 const admin = async (req, res) => {
     res.render('propiedades/admin', {
-        pagina: 'Mis Propiedades'
+        pagina: 'Mis Propiedades',
+        barra: true
     });    
 }
 
