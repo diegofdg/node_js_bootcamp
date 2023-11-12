@@ -16,7 +16,7 @@
   \************************/
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n(function() {\r\n\r\n    // Logical Or\r\n    const lat = 34.040967;\r\n    const lng = -118.1618621;\r\n    const mapa = L.map('mapa').setView([lat, lng ], 13);\r\n\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(mapa);\r\n\r\n})()\n\n//# sourceURL=webpack://01_bienesraices_mvc/./src/js/mapa.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n(function() {\r\n\r\n    // Logical Or\r\n    const lat = 34.040967;\r\n    const lng = -118.1618621;\r\n    const mapa = L.map('mapa').setView([lat, lng ], 13);\r\n    let marker;\r\n\r\n\r\n    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\r\n        attribution: '&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors'\r\n    }).addTo(mapa);\r\n\r\n    // El Pin\r\n    marker = new L.marker([lat, lng], {\r\n        draggable: true,\r\n        autoPan: true\r\n    }).addTo(mapa);\r\n\r\n})()\n\n//# sourceURL=webpack://01_bienesraices_mvc/./src/js/mapa.js?");
 
 /***/ })
 
