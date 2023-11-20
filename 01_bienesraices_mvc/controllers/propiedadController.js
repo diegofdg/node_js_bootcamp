@@ -4,8 +4,7 @@ import { Precio, Categoria, Propiedad } from '../models/index.js';
 
 const admin = async (req, res) => {
     res.render('propiedades/admin', {
-        pagina: 'Mis Propiedades',
-        barra: true
+        pagina: 'Mis Propiedades'
     });    
 }
 
@@ -22,7 +21,6 @@ const crear = async (req, res) => {
         csrfToken: req.csrfToken(),
         categorias,
         precios,
-        barra: true,
         datos: {}
     });
 }
@@ -43,8 +41,7 @@ const guardar = async (req, res) => {
             pagina: 'Crear Propiedad',
             csrfToken: req.csrfToken(),
             categorias,
-            precios, 
-            barra: true,
+            precios,
             errores: resultado.array(),
             datos: req.body
         });
@@ -81,8 +78,15 @@ const guardar = async (req, res) => {
     }
 }
 
+const agregarImagen = async (req, res) => {
+    res.render('propiedades/agregar-imagen', {
+        pagina: 'Agregar Imagen'
+    });    
+}
+
 export {
     admin,
     crear,
-    guardar
+    guardar,
+    agregarImagen
 }
