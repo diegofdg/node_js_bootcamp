@@ -60,7 +60,6 @@ const autenticar = async (req, res) => {
 
     // Autenticar al usuario
     const token = generarJWT({ id: usuario.id, nombre: usuario.nombre });
-    console.log(token)
 
     // Almacenar en un cookie
 
