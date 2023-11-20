@@ -24,6 +24,7 @@ const crear = async (req, res) => {
         categorias,
         precios,
         barra: true,
+        datos: {}
     });
 }
 
@@ -45,7 +46,8 @@ const guardar = async (req, res) => {
             categorias,
             precios, 
             barra: true,
-            errores: resultado.array()
+            errores: resultado.array(),
+            datos: req.body
         });
     }    
 }
