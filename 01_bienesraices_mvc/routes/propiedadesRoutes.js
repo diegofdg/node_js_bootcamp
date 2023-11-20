@@ -5,9 +5,9 @@ import protegerRuta from "../middleware/protegerRuta.js";
 
 const router = express.Router();
 
-router.get('/propiedades', protegerRuta, admin);
-router.get('/propiedades/crear', protegerRuta, crear);
-router.post('/propiedades/crear', protegerRuta,
+router.get('/mis-propiedades', protegerRuta, admin);
+router.get('/mis-propiedades/crear', protegerRuta, crear);
+router.post('/mis-propiedades/crear', protegerRuta,
     body('titulo').notEmpty().withMessage('El Titulo del Anuncio es Obligatorio'),
     body('descripcion')
         .notEmpty().withMessage('La Descripción no puede ir vacia')
@@ -20,7 +20,7 @@ router.post('/propiedades/crear', protegerRuta,
     body('lat').notEmpty().withMessage('Ubica la Propiedad en el Mapa'),
     guardar);
 
-router.get('/propiedades/agregar-imagen/:id', 
+router.get('/mis-propiedades/agregar-imagen/:id', 
     protegerRuta,
     agregarImagen
 )
