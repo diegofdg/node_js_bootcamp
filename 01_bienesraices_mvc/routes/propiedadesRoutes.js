@@ -23,6 +23,10 @@ router.post('/mis-propiedades/crear', protegerRuta,
 router.get('/mis-propiedades/agregar-imagen/:id', 
     protegerRuta,
     agregarImagen
-)
+);
+
+router.post('/propiedades/agregar-imagen/:id', (req, res) => {
+    console.log('Subiendo imagen');
+});
 
 export default router;
