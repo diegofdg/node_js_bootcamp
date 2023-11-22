@@ -3,8 +3,17 @@ import { Precio, Categoria, Propiedad } from '../models/index.js';
 
 
 const admin = async (req, res) => {
+    const { id } = req.usuario;
+
+    const propiedades = await Propiedad.findAll({
+        where: {
+            usuarioId : id
+        }
+    });
+
     res.render('mis-propiedades/admin', {
-        pagina: 'Mis Propiedades'
+        pagina: 'Mis Propiedades',
+        propiedades
     });    
 }
 
