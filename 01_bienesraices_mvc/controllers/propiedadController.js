@@ -15,7 +15,7 @@ const admin = async (req, res) => {
         ],
     });
 
-    res.render('mis-propiedades/admin', {
+    res.render('propiedades/admin', {
         pagina: 'Mis Propiedades',
         propiedades
     });    
@@ -29,7 +29,7 @@ const crear = async (req, res) => {
         Precio.findAll()
     ]);
 
-    res.render('mis-propiedades/crear', {
+    res.render('propiedades/crear', {
         pagina: 'Crear Propiedad',
         csrfToken: req.csrfToken(),
         categorias,
@@ -50,7 +50,7 @@ const guardar = async (req, res) => {
             Precio.findAll()
         ]);
 
-        return res.render('mis-propiedades/crear', {
+        return res.render('propiedades/crear', {
             pagina: 'Crear Propiedad',
             csrfToken: req.csrfToken(),
             categorias,
@@ -110,7 +110,7 @@ const agregarImagen = async (req, res) => {
         return res.redirect('/mis-propiedades');
     }
     
-    res.render('mis-propiedades/agregar-imagen', {
+    res.render('propiedades/agregar-imagen', {
         pagina: `Agregar Imagen: ${propiedad.titulo}`,
         csrfToken: req.csrfToken(),
         propiedad
@@ -155,13 +155,26 @@ const almacenarImagen = async (req, res, next) => {
 
 const editar = async (req, res) => {
 
+    const {id} = req.params;
+
+    // Validar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id);
+    if(!propiedad) {
+        return res.redirect('/mis-propiedades');
+    }
+
+    // Validar que la propiedad pertenece a quien visita esta página
+    if( req.usuario.id.toString() !== propiedad.usuarioId.toString() ) {
+        return res.redirect('/mis-propiedades');
+    }
+
     // Consultar Modelo de Precio y Categorias
     const [categorias, precios] = await Promise.all([
         Categoria.findAll(),
         Precio.findAll()
     ])
 
-    res.render('mis-propiedades/editar', {
+    res.render('propiedades/editar', {
         pagina: 'Editar Propiedad',
         csrfToken: req.csrfToken(),
         categorias,
