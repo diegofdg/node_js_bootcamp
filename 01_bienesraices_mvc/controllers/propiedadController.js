@@ -279,7 +279,12 @@ const mostrarPropiedad = async (req, res) => {
     const {id} = req.params;
 
     // Comprobar que la propiedad exista
-    const propiedad = await Propiedad.findByPk(id);
+    const propiedad = await Propiedad.findByPk(id, {
+        include : [
+            { model: Precio, as: 'precio' },
+            { model: Categoria, as: 'categoria', scope: 'eliminarPassword' },
+        ]
+    });
 
     if(!propiedad) {
         return res.redirect('/404')
