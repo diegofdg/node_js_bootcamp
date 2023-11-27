@@ -276,8 +276,19 @@ const eliminar = async (req, res) => {
 // Muestra una propiedad
 const mostrarPropiedad = async (req, res) => {
     
+    const {id} = req.params;
+
+    // Comprobar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id);
+
+    if(!propiedad) {
+        return res.redirect('/404')
+    }
+
+
     res.render('propiedades/mostrar', {
-        
+        propiedad,
+        pagina: propiedad.titulo
     });
 }
 
