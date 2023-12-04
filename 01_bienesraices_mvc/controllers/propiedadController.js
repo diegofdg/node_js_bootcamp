@@ -7,7 +7,13 @@ const admin = async (req, res) => {
 
     // Leer QueryString
 
-    console.log(req.query);
+    const { pagina: paginaActual } = req.query;
+
+    const expresion = /[0-9]/;
+
+    if(!expresion.test(paginaActual)) {
+        return res.redirect('/mis-propiedades?pagina=1');
+    }
 
     const { id } = req.usuario;
 
