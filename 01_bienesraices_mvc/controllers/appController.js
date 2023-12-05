@@ -1,5 +1,7 @@
 const inicio = async (req, res) => {
-    res.send('Inicio');
+    res.render('inicio', {
+        pagina: 'Inicio'
+    })
 }    
 
 const categoria = async (req, res) => {
