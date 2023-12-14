@@ -5,6 +5,8 @@
 
     let markers = new L.FeatureGroup().addTo(mapa);
 
+    let propiedades = [];
+
     // Filtros
     const filtros = {
         categoria: '',
@@ -17,10 +19,12 @@
     // Filtrado de Categorias y precios
     categoriasSelect.addEventListener('change', e => {
         filtros.categoria = +e.target.value;
+        filtrarPropiedades();
     });
     
     preciosSelect.addEventListener('change', e => {
         filtros.precio = +e.target.value;
+        filtrarPropiedades();
     })
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -31,7 +35,7 @@
         try {
             const url = '/api/propiedades';
             const respuesta = await fetch(url);
-            const propiedades = await respuesta.json();
+            propiedades = await respuesta.json();
             mostrarPropiedades(propiedades);
         } catch (error) {
             console.log(error);
@@ -57,6 +61,13 @@
         })
     }
 
+    const filtrarPropiedades = () => {
+        const resultado = propiedades.filter( filtrarCategoria );
+        console.log(resultado);
+    }
+
+    const filtrarCategoria = propiedad => filtros.categoria ? propiedad.categoriaId === filtros.categoria : propiedad;
+    
     obtenerPropiedades();
 
 })();
