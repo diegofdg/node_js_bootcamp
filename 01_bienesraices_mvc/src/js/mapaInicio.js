@@ -3,7 +3,25 @@
     const lng = -118.1618621;
     const mapa = L.map('mapa-inicio').setView([lat, lng ], 13);
 
-    let markers = new L.FeatureGroup().addTo(mapa)
+    let markers = new L.FeatureGroup().addTo(mapa);
+
+    // Filtros
+    const filtros = {
+        categoria: '',
+        precio: ''
+    }
+
+    const categoriasSelect = document.querySelector('#categorias');
+    const preciosSelect = document.querySelector('#precios');
+
+    // Filtrado de Categorias y precios
+    categoriasSelect.addEventListener('change', e => {
+        filtros.categoria = +e.target.value;
+    });
+    
+    preciosSelect.addEventListener('change', e => {
+        filtros.precio = +e.target.value;
+    })
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
