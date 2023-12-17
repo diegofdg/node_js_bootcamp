@@ -101,6 +101,12 @@ const buscador = async (req, res) => {
             { model: Precio, as: 'precio'}
         ]
     });
+
+    res.render('busqueda', {
+        pagina: 'Resultados de la Búsqueda',
+        propiedades, 
+        csrfToken: req.csrfToken()
+    });
 }
 
 export {
