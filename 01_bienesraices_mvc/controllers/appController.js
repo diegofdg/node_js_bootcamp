@@ -37,7 +37,7 @@ const inicio = async (req, res) => {
         })
     ]);
 
-    console.log(categorias);
+    //console.log(categorias);
 
     res.render('inicio', {
         pagina: 'Inicio',
@@ -83,7 +83,24 @@ const noEncontrado = (req, res) => {
 }
 
 const buscador = async (req, res) => {
-    
+    const { termino } = req.body;
+
+    // Validar que termino no este vacio
+    if(!termino.trim()) {
+        return res.redirect('back');
+    }
+
+    // Consultar las propiedades
+    const propiedades = await Propiedad.findAll({
+        where: {
+            titulo: {
+                [Sequelize.Op.like] : '%' + termino + '%'
+            }
+        },
+        include: [
+            { model: Precio, as: 'precio'}
+        ]
+    });
 }
 
 export {
