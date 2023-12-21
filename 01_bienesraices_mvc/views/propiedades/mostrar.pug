@@ -54,7 +54,14 @@ block contenido
                                 p(class="text-center") Si deseas contactar al vendedor
                                 a(class="text-indigo-600" href="/auth/registro") debes crear una cuenta
                         else
-                            p Puedes enviar mensajes
+                            form(method="POST")
+                                input(type="hidden" name="_csrf" value= csrfToken)
+
+                                div(class="space-y-5")
+                                    label(for="mensaje") Mensaje
+                                    textarea(id="mensaje" name="mensaje" class="w-full px-2 py-2 border border-gray-300 rounded-lg shadow placeholder-gray-400" placeholder="Coloca tu mensaje aquí" )
+
+                                    input(type="submit" value="Enviar Mensaje" class="bg-indigo-600 text-white font-bold uppercase text-sm w-full p-2 cursor-pointer")
 
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
