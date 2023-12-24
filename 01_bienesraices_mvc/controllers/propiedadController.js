@@ -32,7 +32,8 @@ const admin = async (req, res) => {
                 },
                 include: [
                     { model: Categoria, as: 'categoria' },
-                    { model: Precio, as: 'precio' }
+                    { model: Precio, as: 'precio' },
+                    { model: Mensaje, as: 'mensajes' }
                 ],
             }),
             Propiedad.count({
