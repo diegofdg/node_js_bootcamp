@@ -9,7 +9,17 @@
     async function cambiarEstadoPropiedad(e) {
         const { propiedadId: id } = e.target.dataset
 
-        console.log(id);
-       
+        try {
+            const url = `/propiedades/${id}`
+
+            const respuesta = await fetch(url, {
+                method: 'PUT'
+            });
+
+            console.log(respuesta);
+            
+        } catch (error) {
+            console.log(error)
+        }       
     }
 })()
