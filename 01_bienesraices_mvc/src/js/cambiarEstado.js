@@ -20,7 +20,9 @@
                 }
             });
 
-            console.log(respuesta);
+            const {resultado} = await respuesta.json()
+
+            console.log (resultado);
             
         } catch (error) {
             console.log(error)

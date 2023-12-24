@@ -313,20 +313,20 @@ const cambiarEstado = async (req, res) => {
     const {id} = req.params;
 
     // Validar que la propiedad exista
-    const propiedad = await Propiedad.findByPk(id)
+    const propiedad = await Propiedad.findByPk(id);
     if(!propiedad) {
-        return res.redirect('/mis-propiedades')
+        return res.redirect('/mis-propiedades');
     }
 
     // Revisar que quien visita la URl, es quien creo la propiedad
     if(propiedad.usuarioId.toString() !== req.usuario.id.toString() ) {
-        return res.redirect('/mis-propiedades')
+        return res.redirect('/mis-propiedades');
     }
 
     // Actualizar
-    propiedad.publicado = !propiedad.publicado
+    propiedad.publicado = !propiedad.publicado;
 
-    await propiedad.save()
+    await propiedad.save();
 
     res.json({
         resultado: true
