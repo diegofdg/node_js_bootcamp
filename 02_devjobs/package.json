@@ -1,0 +1,18 @@
+{
+  "name": "02_devjobs",
+  "version": "1.0.0",
+  "description": "Portal DevJobs con NodeJS, Handlebars Mongoose",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node ./index.js"
+  },
+  "author": "Diego Fabián Di Giorgio",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
