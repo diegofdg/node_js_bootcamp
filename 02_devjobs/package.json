@@ -4,6 +4,7 @@
   "description": "Portal DevJobs con NodeJS, Handlebars Mongoose",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon ./index",
     "start" : "node ./index.js"
   },
   "author": "Diego Fabián Di Giorgio",
