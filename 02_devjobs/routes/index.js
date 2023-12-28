@@ -14,5 +14,8 @@ module.exports = () => {
         vacantesController.agregarVacante
     );
 
+    // Mostrar Vacante (singular)
+    router.get('/vacantes/:url',vacantesController.mostrarVacante );
+
     return router;
 }
