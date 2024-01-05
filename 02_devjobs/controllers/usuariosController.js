@@ -10,13 +10,25 @@ exports.formCrearCuenta = (req, res) => {
 
 exports.validarRegistro = (req, res, next) => {
 
+    // sanitizar
+    req.sanitizeBody('nombre').escape();
+    req.sanitizeBody('email').escape();
+    req.sanitizeBody('password').escape();
+    req.sanitizeBody('confirmar').escape();
+
     // validar
     req.checkBody('nombre', 'El Nombre es Obligatorio').notEmpty();
+    req.checkBody('email', 'El email debe ser valido').isEmail();
+    req.checkBody('password', 'El password no puede ir vacio').notEmpty();
+    req.checkBody('confirmar', 'Confirmar password no puede ir vacio').notEmpty();
+    req.checkBody('confirmar', 'El password es diferente').equals(req.body.password);
 
     const errores = req.validationErrors();
 
-    console.log(errores);
-    return;
+    if(errores){
+        // si hay errores
+        
+    }
 
     // Si toda la validación es correcta
     next();
