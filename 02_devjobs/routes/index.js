@@ -37,6 +37,9 @@ module.exports = () => {
     // Autenticar Usuarios
     router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     router.post('/iniciar-sesion',authController.autenticarUsuario);
+
+    // Panel de administración
+    router.get('/administracion', authController.mostrarPanel);
     
     return router;
 }
