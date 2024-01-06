@@ -34,3 +34,9 @@ exports.mostrarPanel = async (req, res) => {
         vacantes
     });
 }
+
+exports.cerrarSesion = (req, res) => {
+    req.logout();
+    req.flash('correcto', 'Cerraste Sesión Correctamente');
+    return res.redirect('/iniciar-sesion');
+}
