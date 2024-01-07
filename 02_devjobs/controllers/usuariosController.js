@@ -14,6 +14,7 @@ exports.subirImagen = (req, res, next) => {
 
 // Opciones de Multer
 const configuracionMulter = {
+    limits : { fileSize : 100000 },
     storage: fileStorage = multer.diskStorage({
         destination : (req, file, cb) => {
             cb(null, __dirname+'../../public/uploads/perfiles');
@@ -21,6 +22,14 @@ const configuracionMulter = {
         filename : (req, file, cb) => {
             const extension = file.mimetype.split('/')[1];
             cb(null, `${shortid.generate()}.${extension}`);
+        },
+        fileFilter(req, file, cb) {
+            if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' ) {
+                // el callback se ejecuta como true o false : true cuando la imagen se acepta
+                cb(null, true);
+            } else {
+                cb(new Error('Formato No Válido'));
+            }
         }
     })
 }
@@ -104,6 +113,12 @@ exports.editarPerfil = async (req, res) => {
     usuario.email = req.body.email;
     if(req.body.password) {
         usuario.password = req.body.password
+    }
+
+    console.log(req.file)
+
+    if(req.file) {
+        usuario.imagen = req.file.filename;
     }
 
     await usuario.save();

@@ -108,9 +108,6 @@ exports.eliminarVacante = async (req, res) => {
 
     const vacante = await Vacante.findById(id);
 
-    console.log(vacante)
-    
-
     if(verificarAutor(vacante, req.user)){
         // Todo bien, si es el usuario, eliminar
         vacante.remove();
