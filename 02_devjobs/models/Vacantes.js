@@ -6,7 +6,7 @@ const shortid = require('shortid');
 const vacantesSchema =  new mongoose.Schema({
     titulo: {
         type: String, 
-        required: 'El nombre de la vacante es obligatorio',
+        /* required: 'El nombre de la vacante es obligatorio', */
         trim : true
     }, 
     empresa: {
@@ -16,7 +16,7 @@ const vacantesSchema =  new mongoose.Schema({
     ubicacion: {
         type: String,
         trim: true,
-        required: 'La ubicación es obligatoria'
+        /* required: 'La ubicación es obligatoria' */
     },
     salario: {
         type: String,
