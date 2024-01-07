@@ -102,3 +102,12 @@ exports.validarVacante = (req, res, next) => {
 
     next(); // siguiente middleware
 }
+
+exports.eliminarVacante = async (req, res) => {
+    const { id } = req.params;
+
+    console.log(id);
+
+
+    
+}

@@ -1,3 +1,6 @@
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
 document.addEventListener('DOMContentLoaded', () => {
     const skills = document.querySelector('.lista-conocimientos');
 
@@ -12,7 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
         skills.addEventListener('click', agregarSkills);
         // una vez que estamos en editar, llamar la función
         skillsSeleccionados();
-    }    
+    }
+    
+    const vacantesListado = document.querySelector('.panel-administracion');
+
+    if(vacantesListado){
+        vacantesListado.addEventListener('click', accionesListado);
+    }
 })
 
 const skills = new Set();
@@ -55,4 +64,16 @@ const limpiarAlertas = () => {
             clearInterval(interval);
         }
     }, 2000);
+}
+
+// Eliminar vacantes
+const accionesListado = e => {
+    e.preventDefault();
+
+    if(e.target.dataset.eliminar){
+        // eliminar por axios
+        
+    }  else if(e.target.tagName === 'A') {
+        window.location.href = e.target.href;
+    }
 }
