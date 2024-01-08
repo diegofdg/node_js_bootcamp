@@ -17,6 +17,13 @@ app.set('views', path.join(__dirname, './views'));
 // archivos staticos
 app.use(express.static('public'));
 
+// Middleware (usuario logueado, flash messages, fecha actual)
+app.use((req, res, next) => {
+    const fecha = new Date();
+    res.locals.year = fecha.getFullYear();
+    next();
+});
+
 // Routing
 app.use('/', router());
 
