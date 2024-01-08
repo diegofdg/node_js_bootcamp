@@ -8,11 +8,12 @@ exports.formCrearCuenta = async (req, res) => {
 
 exports.crearNuevaCuenta = async (req, res) => {
     const usuario = req.body;
-    
-    const nuevoUsuario = await Usuarios.create(usuario);
 
-    console.log(nuevoUsuario);
-
+    try {
+        const nuevoUsuario = await Usuarios.create(usuario);
     
-    
+        console.log(nuevoUsuario);        
+    } catch (error) {
+        console.log(error);        
+    }    
 }
