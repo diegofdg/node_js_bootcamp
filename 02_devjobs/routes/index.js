@@ -59,6 +59,9 @@ module.exports = () => {
     router.get('/reestablecer-password', authController.formReestablecerPassword);
     router.post('/reestablecer-password', authController.enviarToken);
 
+    // Resetear Password ( Almacenar en la BD )
+    router.get('/reestablecer-password/:token', authController.reestablecerPassword);
+
     // Panel de administración
     router.get('/administracion', 
         authController.verificarUsuario,
