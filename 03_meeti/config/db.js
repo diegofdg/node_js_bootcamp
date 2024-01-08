@@ -12,5 +12,9 @@ module.exports = new sequelize(process.env.DB, process.env.USER_DB, process.env.
     min: 0,
     acquire: 3000,
     idle: 10000
-  }
+  },
+  // define: {
+  //     timestamps : false
+  // },
+  logging: false
 });
