@@ -23,8 +23,9 @@ exports.crearNuevaCuenta = async (req, res) => {
         }
 
         const nuevoUsuario = await Usuarios.create(usuario);
-    
-        console.log(nuevoUsuario);        
+        //Flash Message y redireccionar
+        req.flash('exito', 'Hemos enviado un E-mail, confirma tu cuenta');
+        res.redirect('/iniciar-sesion');  
     } catch (error) {
         console.log(error);
         // extraer el message de los errores
@@ -39,4 +40,11 @@ exports.crearNuevaCuenta = async (req, res) => {
         req.flash('error', listaErrores);
         res.redirect('/crear-cuenta');
     }    
+}
+
+// Formulario para iniciar sesion
+exports.formIniciarSesion = (req, res) => {
+    res.render('iniciar-sesion', {
+        nombrePagina : 'Iniciar Sesión'
+    });
 }
