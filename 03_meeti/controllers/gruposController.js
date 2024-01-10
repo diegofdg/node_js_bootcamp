@@ -4,6 +4,7 @@ const multer = require('multer');
 const shortid = require('shortid');
 
 const configuracionMulter = {
+    limits : { fileSize : 100000 },
     storage: fileStorage = multer.diskStorage({
         destination: (req, file, next) => {
             next(null, __dirname+'/../public/uploads/grupos/');
@@ -21,7 +22,15 @@ const upload = multer(configuracionMulter).single('imagen');
 exports.subirImagen = (req, res, next) => {
     upload(req, res, function(error) {
         if(error) {
-            console.log(error);
+            if(error instanceof multer.MulterError) {
+                if(error.code === 'LIMIT_FILE_SIZE') {
+                    req.flash('error', 'El Archivo es muy grande')
+                } else {
+                    req.flash('error', error.message);
+                }
+            }
+            res.redirect('back');
+            return;
         } else {
             next();
         }
