@@ -13,7 +13,16 @@ const configuracionMulter = {
             const extension = file.mimetype.split('/')[1];
             next(null, `${shortid.generate()}.${extension}`);
         }
-    })
+    }), 
+    fileFilter(req, file, next) {
+        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            //el formato es valido
+            next(null, true);
+        } else {
+            // el formato no es valido
+            next(new Error('Formato no válido'), false);
+        }
+    }
 }
 
 const upload = multer(configuracionMulter).single('imagen');
@@ -28,6 +37,8 @@ exports.subirImagen = (req, res, next) => {
                 } else {
                     req.flash('error', error.message);
                 }
+            } else if(error.hasOwnProperty('message')) {
+                req.flash('error', error.message);
             }
             res.redirect('back');
             return;
