@@ -10,45 +10,27 @@
     </div>
 
     <div class="seccion-admin">
-        <h2>Tus Meeti's</h2>
+        <h2>Próximos Meeti's</h2>
+        <% if(meeti.length > 0 ) { %>
         <ul>
+            <% meeti.forEach(meet => { %>
             <li>
                 <div class="informacion-admin">
-                    <p class="fecha">Lunes, 09 de Enero 2024 </p>
-                    <h3>E-Commerce en Mexico</h3>                    
-                    <small>23 Asistentes</small>
+                    <p class="fecha"><%= meet.fecha %></p>                    
+                    <h3><%= meet.titulo %></h3>                    
+                    <small><%= meet.interesados.length %> Interesados</small>
                 </div>
                 <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-azul2">Asistentes</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
+                    <a href="/editar-meeti/<%= meet.id %>" class="btn btn-verde">Editar</a>
+                    <a href="/asistentes-meeti/<%= meet.id %>" class="btn btn-azul2">Asistentes</a>
+                    <a href="/eliminar-meeti/<%= meet.id %>" class="btn btn-rojo">Eliminar</a>
                 </div>
             </li>
-            <li>
-                <div class="informacion-admin">
-                    <p class="fecha">Martes, 10 de Enero 2024 </p>
-                    <h3>Bitcoin y otras criptomonedas</h3>                    
-                    <small>30 Asistentes</small>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-azul2">Asistentes</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
-                </div>
-            </li>
-            <li>
-                <div class="informacion-admin">
-                    <p class="fecha">Miercoles, 11 de Enero 2024 </p>
-                    <h3>Node Mexico</h3>                    
-                    <small>230 Asistentes</small>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-azul2">Asistentes</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
-                </div>
-            </li>
+            <% }) %>
         </ul>
+        <% } else { %>
+            <p>Aún no tienes meeti's creados</p>
+        <% } %>
     </div>
 
     <div class="seccion-admin">
