@@ -27,7 +27,7 @@ function buscarDireccion(e) {
         const provider = new OpenStreetMapProvider();
         provider.search({ query: e.target.value }).then(( resultado ) => {
             geocodeService.reverse().latlng(resultado[0].bounds[0], 15 ).run(function(error, result) {
-                console.log(result);
+                llenarInputs(result);
                 
                 // console.log(resultado);
                 // mostrar el mapa
@@ -55,14 +55,28 @@ function buscarDireccion(e) {
                     // reverse geocoding, cuando el usuario reubica el pin
                     geocodeService.reverse().latlng(posicion, 15 ).run(function(error, result) {
 
-                        console.log(result);
+                        llenarInputs(result);
                     
                         // asigna los valores al popup del marker
                         marker.bindPopup(result.address.LongLabel);
                     });
                 })
-            })
-
+            });
         });
-    }
+    }   
 }
+
+function llenarInputs(resultado) {
+    document.querySelector('#direccion').value = resultado.address.Address || '';
+    document.querySelector('#ciudad').value = resultado.address.City || '';
+    document.querySelector('#estado').value = resultado.address.Region || '';
+    document.querySelector('#pais').value = resultado.address.CountryCode || '';
+    document.querySelector('#lat').value = resultado.latlng.lat || '';
+    document.querySelector('#lng').value = resultado.latlng.lng || '';
+}
+
+const buttonSubmit = document.querySelector('input[type="submit"]');
+console.log(buttonSubmit);
+
+buttonSubmit.setAttribute("disabled", false);
+buttonSubmit.setAttribute("readonly", false);

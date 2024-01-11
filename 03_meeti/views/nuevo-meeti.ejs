@@ -7,7 +7,7 @@
             <select name="grupoId">
                 <option value="" disabled selected>-- Selecciona Grupo --</option>
                 <% if(grupos.length > 0 )  { %>
-                    <% grupos.forEach(grupo => { %>
+                    <% grupos.forEach(grupo => {  %>
                         <option value="<%= grupo.id %>"><%= grupo.nombre %></option>
                     <% }) %>
                 <% } %>
