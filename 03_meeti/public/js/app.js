@@ -4,7 +4,7 @@ const lat = 20.666332695977;
 const lng = -103.3921777456999;
 
 const map = L.map('mapa').setView([lat, lng], 15);
-
+let markers = new L.FeatureGroup().addTo(map);
 let marker;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function buscarDireccion(e) {
     if(e.target.value.length > 8) {
+        // si existe un pin anterior limpiarlo
+        markers.clearLayers();
+
         // Utilizar el provider
         const provider = new OpenStreetMapProvider();
         provider.search({ query: e.target.value }).then(( resultado ) => {
@@ -33,6 +36,16 @@ function buscarDireccion(e) {
             .addTo(map)
             .bindPopup(resultado[0].label)
             .openPopup();
+
+            // asignar al contenedor markers
+            markers.addLayer(marker);
+
+            // detectar movimiento del marker
+            marker.on('moveend', function(e) {
+                marker = e.target;
+                const posicion = marker.getLatLng();
+                map.panTo(new L.LatLng(posicion.lat, posicion.lng) );                
+            });
         });
     }
 }
