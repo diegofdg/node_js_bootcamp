@@ -74,9 +74,3 @@ function llenarInputs(resultado) {
     document.querySelector('#lat').value = resultado.latlng.lat || '';
     document.querySelector('#lng').value = resultado.latlng.lng || '';
 }
-
-const buttonSubmit = document.querySelector('input[type="submit"]');
-console.log(buttonSubmit);
-
-buttonSubmit.setAttribute("disabled", false);
-buttonSubmit.setAttribute("readonly", false);

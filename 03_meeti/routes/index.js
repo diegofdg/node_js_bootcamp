@@ -75,6 +75,12 @@ module.exports = function() {
         meetiController.formNuevoMeeti
     );
 
+    // Nuevos Meeti
+    router.post('/nuevo-meeti', 
+        authController.usuarioAutenticado,
+        meetiController.crearMeti
+    );
+
     return router;
 }
 
