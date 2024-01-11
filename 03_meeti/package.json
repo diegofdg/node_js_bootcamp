@@ -4,15 +4,23 @@
   "description": "Proyecto Meeti con Node, PostgreSQL y EJS",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "start": "concurrently \"npm run dev\" \"npm run watch\" ",
+    "watch": "webpack --w --mode development"
   },
   "author": "Diego Fabián Di Giorgio",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
+    "nodemon": "^1.18.10",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "concurrently": "^4.1.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
     "dotenv": "^7.0.0",
