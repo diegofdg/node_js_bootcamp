@@ -93,7 +93,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("\n\n//# sourceURL=webpack:///./public/js/app.js?");
+eval("var map = L.map('mapa').setView([51.505, -0.09], 13);\nL.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {\n  maxZoom: 19,\n  attribution: '&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>'\n}).addTo(map);\nvar marker = L.marker([51.5, -0.09]).addTo(map);\n\n//# sourceURL=webpack:///./public/js/app.js?");
 
 /***/ })
 
