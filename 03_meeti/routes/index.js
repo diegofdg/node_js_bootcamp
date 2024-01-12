@@ -97,6 +97,10 @@ module.exports = function() {
         authController.usuarioAutenticado,
         meetiController.formEliminarMeeti
     );
+    router.post('/eliminar-meeti/:id',
+        authController.usuarioAutenticado,
+        meetiController.eliminarMeeti
+    );
 
     return router;
 }
