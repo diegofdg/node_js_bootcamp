@@ -14,14 +14,21 @@ exports.panelAdministracion = async (req, res) => {
                 }
             }
     }));
+    consultas.push( Meeti.findAll({ where : { usuarioId : req.user.id, 
+                fecha : {
+                    [Op.lt] : moment(new Date()).format("YYYY-MM-DD")
+                }
+            }
+    }));
     
     // array destructuring
-    const [grupos, meeti] = await Promise.all(consultas);
+    const [grupos, meeti, anteriores] = await Promise.all(consultas);
     
     res.render('administracion', {
         nombrePagina : 'Panel de Administracion', 
         grupos, 
         meeti,
+        anteriores,
         moment
     });
 }
