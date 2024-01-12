@@ -117,6 +117,10 @@ module.exports = function() {
         authController.usuarioAutenticado,
         usuariosController.formCambiarPassword
     );
+    router.post('/cambiar-password',
+        authController.usuarioAutenticado,
+        usuariosController.cambiarPassword
+    );
 
     return router;
 }
