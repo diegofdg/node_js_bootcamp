@@ -1,6 +1,55 @@
 const Usuarios = require('../models/Usuarios');
 const enviarEmail = require('../handlers/emails');
 
+const multer = require('multer');
+const shortid = require('shortid');
+const fs = require('fs');
+
+const configuracionMulter = {
+    limits : { fileSize : 100000 },
+    storage: fileStorage = multer.diskStorage({
+        destination: (req, file, next) => {
+            next(null, __dirname+'/../public/uploads/perfiles/');
+        },
+        filename : (req, file, next) => {
+            const extension = file.mimetype.split('/')[1];
+            next(null, `${shortid.generate()}.${extension}`);
+        }
+    }), 
+    fileFilter(req, file, next) {
+        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            //el formato es valido
+            next(null, true);
+        } else {
+            // el formato no es valido
+            next(new Error('Formato no válido'), false);
+        }
+    }
+}
+
+const upload = multer(configuracionMulter).single('imagen');
+
+// sube imagen en el servidor
+exports.subirImagen = (req, res, next) => {
+    upload(req, res, function(error) {
+        if(error) {
+            if(error instanceof multer.MulterError) {
+                if(error.code === 'LIMIT_FILE_SIZE') {
+                    req.flash('error', 'El Archivo es muy grande')
+                } else {
+                    req.flash('error', error.message);
+                }
+            } else if(error.hasOwnProperty('message')) {
+                req.flash('error', error.message);
+            }
+            res.redirect('back');
+            return;
+        } else {
+            next();
+        }
+    })
+}
+
 exports.formCrearCuenta = async (req, res) => {
     res.render('crear-cuenta', {
         nombrePagina : 'Crea tu Cuenta'
@@ -158,4 +207,32 @@ exports.formSubirImagenPerfil = async (req, res) => {
         usuario
     });
 
+}
+
+// Guarda la imagen nueva, elimina la anterior ( si aplica ) y guarda el registro en la BD
+exports.guardarImagenPerfil = async (req, res) => {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    // si hay imagen anterior, eliminarla
+    if(req.file && usuario.imagen) {
+        const imagenAnteriorPath = __dirname + `/../public/uploads/perfiles/${usuario.imagen}`;
+
+        // eliminar archivo con filesystem
+        fs.unlink(imagenAnteriorPath, (error) => {
+            if(error) {
+                console.log(error);
+            }
+            return;
+        })
+    }
+
+    // almacenar la nueva imagen
+    if(req.file) {
+        usuario.imagen = req.file.filename;
+    }
+
+    // almacenar en la base de datos y redireccionar
+    await usuario.save();
+    req.flash('exito', 'Cambios Almacenados Correctamente');
+    res.redirect('/administracion');
 }

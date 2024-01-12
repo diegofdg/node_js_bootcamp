@@ -127,6 +127,11 @@ module.exports = function() {
         authController.usuarioAutenticado,
         usuariosController.formSubirImagenPerfil
     );
+    router.post('/imagen-perfil', 
+        authController.usuarioAutenticado,
+        usuariosController.subirImagen,
+        usuariosController.guardarImagenPerfil
+    );
 
     return router;
 }
