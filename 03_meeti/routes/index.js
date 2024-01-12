@@ -92,6 +92,12 @@ module.exports = function() {
         meetiController.editarMeeti
     );
 
+    // Eliminar Meeti
+    router.get('/eliminar-meeti/:id',
+        authController.usuarioAutenticado,
+        meetiController.formEliminarMeeti
+    );
+
     return router;
 }
 
