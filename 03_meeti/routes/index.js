@@ -102,6 +102,12 @@ module.exports = function() {
         meetiController.eliminarMeeti
     );
 
+    // Editar información de perfil
+    router.get('/editar-perfil',
+        authController.usuarioAutenticado,
+        usuariosController.formEditarPerfil
+    );
+
     return router;
 }
 

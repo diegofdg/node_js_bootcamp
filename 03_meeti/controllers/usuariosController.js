@@ -81,3 +81,13 @@ exports.confirmarCuenta = async (req, res, next) => {
     req.flash('exito', 'La cuenta se ha confirmado, ya puedes iniciar sesión');
     res.redirect('/iniciar-sesion');
 }
+
+// Muestra el formulario para editar el perfil
+exports.formEditarPerfil = async (req, res) => {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    res.render('editar-perfil', {
+        nombrePagina : 'Editar Perfil',
+        usuario
+    })
+}
