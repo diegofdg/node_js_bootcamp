@@ -7,12 +7,17 @@ const Op = Sequelize.Op;
 exports.panelAdministracion = async (req, res) => {
     // consultas
     const consultas = [];
-    consultas.push( Grupos.findAll({ where: { usuarioId : req.user.id }}) );
-    consultas.push( Meeti.findAll({ where : { usuarioId : req.user.id, 
-                fecha : { 
-                    [Op.gte] : moment(new Date()).format("YYYY-MM-DD") 
-                }
+    consultas.push( Grupos.findAll({ where: { usuarioId : req.user.id }}) );    
+    consultas.push( Meeti.findAll({ 
+        where : { 
+            usuarioId : req.user.id, 
+            fecha : { 
+                [Op.gte] : moment(new Date()).format("YYYY-MM-DD") 
             }
+        },
+        order : [
+            ['fecha', 'ASC']
+        ]
     }));
     consultas.push( Meeti.findAll({ where : { usuarioId : req.user.id, 
                 fecha : {
