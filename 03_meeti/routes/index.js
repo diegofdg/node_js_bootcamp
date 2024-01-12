@@ -122,6 +122,12 @@ module.exports = function() {
         usuariosController.cambiarPassword
     );
 
+    // Imagenes de perfil
+    router.get('/imagen-perfil', 
+        authController.usuarioAutenticado,
+        usuariosController.formSubirImagenPerfil
+    );
+
     return router;
 }
 

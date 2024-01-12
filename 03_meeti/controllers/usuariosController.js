@@ -147,3 +147,15 @@ exports.cambiarPassword = async (req, res, next) => {
     req.flash('exito', 'Password Modificado Correctamente, vuelve a iniciar sesión');
     res.redirect('/iniciar-sesion');
 }
+
+// Muestra el formulario para subir una imagen de perfil
+exports.formSubirImagenPerfil = async (req, res) => {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    // mostrar la vista
+    res.render('imagen-perfil', {
+        nombrePagina : 'Subir Imagen perfil',
+        usuario
+    });
+
+}
