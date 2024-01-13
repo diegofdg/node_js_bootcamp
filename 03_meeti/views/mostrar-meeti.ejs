@@ -1,24 +1,40 @@
 <div class="encabezado-evento">
     <div class="contenedor">
         <div class="resumen-evento">
-            <h1>Nombre Evento</h1>
+            <h1><%= meeti.titulo %></h1>
             <div class="info-autor">
                 <div class="imagen">
-                    <img src="">                    
+                    <% if(meeti.usuario.imagen ) { %> 
+                        <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>">
+                    <% } %>
                 </div>
                 <div class="informacion">
                     <p>Organizado por:</p>
                     <p class="autor">
-                        <a href="">Juan </a> Creador de: 
-                        <a href="">Nombre Grupo</a>
+                        <a href="/usuarios/<%= meeti.usuario.id %>"><%= meeti.usuario.nombre %> </a> Creador de: 
+                        <a href="/grupos/<%= meeti.grupo.id %>"><%= meeti.grupo.nombre %></a>
                     </p>
                 </div>
             </div><!--.info-autor-->
         </div><!--resumen-evento-->
 
         <div class="pregunta-asistencia">
-            <p>¿Asistirás?</p>
-            <a href="">Si</a>
+            <% if(usuario.id) { %>
+                <% const existe = meeti.interesados.includes(usuario.id) %>
+                    <form action="/confirmar-asistencia/<%= meeti.slug %>" id="confirmar-asistencia">
+                        <p>¿Asistirás?</p>
+                        <% if( existe ) {  %>
+                            <input type="hidden" id="accion" value="cancelar">
+                            <input type="submit" class="btn btn-rojo" value="Cancelar">
+                        <% } else { %>
+                            <input type="hidden" id="accion" value="confirmar">
+                            <input type="submit" class="btn btn-azul" value="Si">
+                        <% } %>
+                        <div id="mensaje"></div>
+                    </form>
+                <% } else { %>
+                    <p>Inicia sesión para confirmar tu asistencia</p>
+                <% } %>
         </div>
     </div>
 </div>
@@ -27,14 +43,16 @@
     <div class="contenedor">
         <div class="informacion-evento">
             <div class="descripcion">
-                // Imagen del Meeti
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit ea nihil inventore voluptates cum quaerat harum dolores excepturi, quam consectetur quidem accusamus corporis similique, assumenda a eaque quo quia mollitia.</p>
+                <% if(meeti.grupo.imagen) { %>
+                    <img src="/uploads/grupos/<%= meeti.grupo.imagen %>">
+                <% } %>
+                <%- meeti.descripcion %>
             </div><!--.descripcion-->
 
             <div class="asistentes">
                 <div class="titulo">
-                    <h3>Asistentes</h3>
-                    <a href="">Ver Todos</a>
+                    <h3><%= meeti.interesados.length %> Asistentes</h3>
+                    <a href="/asistentes/<%= meeti.slug %>">Ver Todos</a>
                 </div>
             </div><!--asistentes-->
 
@@ -71,10 +89,12 @@
 
         <aside class="informacion">
             <div class="fecha">
-                <p>30/01/2024 a las 10:00 Horas</p>
+                <% moment.locale('es'); %>
+                <% const fecha = meeti.fecha + ' ' + meeti.hora; %>
+                <p><%= moment(fecha).format('LLLL') %> Horas</p>
             </div>
             <div class="ubicacion">
-                <p>Avenida Siempre Viva</p>
+                <p> <%= meeti.direccion %>, <%= meeti.ciudad %>, <%= meeti.estado %>, <%= meeti.pais %> </p>
             </div>
         </aside>
     </div>
