@@ -2,6 +2,7 @@ const Meeti = require('../../models/Meeti');
 const Grupos = require('../../models/Grupos');
 const Usuarios = require('../../models/Usuarios');
 const moment = require('moment');
+const Sequelize = require('sequelize');
 
 exports.mostrarMeeti = async (req, res) => {
     const meeti = await Meeti.findOne({ 
@@ -34,5 +35,10 @@ exports.mostrarMeeti = async (req, res) => {
 
 // Confirma o cancela si el usuario asistirá al meeti
 exports.confirmarAsistencia = async (req, res) => {
-    console.log(req.body);    
+    Meeti.update(
+        {'interesados' :  Sequelize.fn('array_append', Sequelize.col('interesados'), req.user.id  ) },
+        {'where' : { 'slug' : req.params.slug }}
+    );
+    // mensaje
+    res.send('Has confirmado tu asistencia');
 }
