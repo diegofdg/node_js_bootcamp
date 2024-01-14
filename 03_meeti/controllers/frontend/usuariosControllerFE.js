@@ -16,7 +16,7 @@ exports.mostrarUsuario = async (req, res, next) => {
     }
 
     // mostrar la vista
-    res.render('mostar-perfil', {
+    res.render('mostrar-perfil', {
         nombrePagina : `Perfil Usuario: ${usuario.nombre}`,
         usuario,
         grupos
