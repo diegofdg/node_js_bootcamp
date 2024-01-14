@@ -8,6 +8,11 @@ module.exports = function() {
     router.post('/clientes',
         clienteController.nuevoCliente 
     );
+
+    // Obtener todos los clientes
+    router.get('/clientes', 
+        clienteController.mostrarClientes
+    );
     
     return router;
 }
