@@ -9,6 +9,7 @@ const meetiController = require('../controllers/meetiController');
 
 const meetiControllerFE  = require('../controllers/frontend/meetiControllerFE');
 const usuariosControllerFE  = require('../controllers/frontend/usuariosControllerFE');
+const gruposControllerFE  = require('../controllers/frontend/gruposControllerFE');
 
 module.exports = function() {
 
@@ -34,6 +35,11 @@ module.exports = function() {
     // muestra perfiles en el front end
     router.get('/usuarios/:id', 
         usuariosControllerFE.mostrarUsuario
+    );
+
+    // muestra los grupos en el front end
+    router.get('/grupos/:id', 
+        gruposControllerFE.mostrarGrupo
     );
 
     /** Crear y confirmar cuentas */
