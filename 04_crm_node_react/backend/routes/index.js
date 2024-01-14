@@ -36,6 +36,11 @@ module.exports = function() {
         productosController.subirArchivo,
         productosController.nuevoProducto
     );
+
+    // Muestra todos los productos
+    router.get('/productos', 
+        productosController.mostrarProductos
+    );
     
     return router;
 }
