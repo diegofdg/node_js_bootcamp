@@ -79,6 +79,11 @@ module.exports = function() {
     router.put('/pedidos/:idPedido', 
         pedidosController.actualizarPedido
     );
+
+    // Elimina un pedido
+    router.delete('/pedidos/:idPedido', 
+        pedidosController.eliminarPedido
+    );
     
     return router;
 }
