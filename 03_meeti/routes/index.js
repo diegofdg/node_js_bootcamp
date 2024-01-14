@@ -38,6 +38,11 @@ module.exports = function() {
         comentariosControllerFE.agregarComentario
     );
 
+    /** Elimina comentarios en el meeti */
+    router.post('/eliminar-comentario',
+        comentariosControllerFE.eliminarComentario
+    );
+
     // muestra perfiles en el front end
     router.get('/usuarios/:id', 
         usuariosControllerFE.mostrarUsuario

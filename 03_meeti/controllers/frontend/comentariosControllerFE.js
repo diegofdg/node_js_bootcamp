@@ -15,3 +15,8 @@ exports.agregarComentario = async (req, res, next) => {
     res.redirect('back');
     next();
 }
+
+// elimina un comentario de la base de datos
+exports.eliminarComentario = async (req, res, next ) => {
+    res.send('Se eliminó...');
+}
