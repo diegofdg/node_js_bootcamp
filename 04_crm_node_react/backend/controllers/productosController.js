@@ -39,7 +39,7 @@ exports.nuevoProducto = async (req, res, next) => {
     const producto = new Productos(req.body);
 
     try {
-        if(req.file.filename) {
+        if(req.file) {
             producto.imagen = req.file.filename
         }
         await producto.save();
@@ -94,6 +94,17 @@ exports.actualizarProducto = async (req, res, next) => {
         });
 
         res.json(producto);
+    } catch (error) {
+        console.log(error);
+        next();
+    }
+}
+
+// Elimina un producto via ID
+exports.eliminarProducto = async (req, res, next) => {
+    try {
+        await Productos.findByIdAndDelete({ _id : req.params.idProducto });
+        res.json({mensaje : 'El Producto se ha eliminado'});
     } catch (error) {
         console.log(error);
         next();
