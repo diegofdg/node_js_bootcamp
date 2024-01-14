@@ -18,6 +18,11 @@ module.exports = function() {
     router.get('/clientes/:idCliente', 
         clienteController.mostrarCliente
     );
+
+    // Actualizar Cliente
+    router.put('/clientes/:idCliente', 
+        clienteController.actualizarCliente
+    );
     
     return router;
 }
