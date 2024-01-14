@@ -41,6 +41,11 @@ module.exports = function() {
     router.get('/productos', 
         productosController.mostrarProductos
     );
+
+    // muestra un producto en especifico por su ID
+    router.get('/productos/:idProducto', 
+        productosController.mostrarProducto
+    );
     
     return router;
 }
