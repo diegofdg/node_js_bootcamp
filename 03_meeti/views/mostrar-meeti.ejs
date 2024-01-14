@@ -73,17 +73,22 @@
                             <p>Escrito por: <span>Juan</span></p>
                         </div>
                     </div>
-                <!--formulario comentarios-->                
-                <form action="" method="POST" class="default-form comentarios">
-                    <legend>Agrega un comentario</legend>
-                    <div class="campo">
-                        <label>Comentario</label>
-                        <textarea name="comentario"></textarea>
-                    </div>
-                    <div class="campo enviar">
-                        <input type="submit" value="Enviar" class="btn btn-rosa">
-                    </div>
-                </form><!--/formulario-comentarios-->
+                <!--formulario comentarios-->
+                <% if(usuario.id) { %>
+                    <form action="/meeti/<%= meeti.id %>" method="POST" class="default-form comentarios">
+                        <legend>Agrega un comentario</legend>
+                        <div class="campo">
+                            <label>Comentario</label>
+                            <textarea name="comentario"></textarea>
+                        </div>
+                        <div class="campo enviar">
+                            <input type="submit" value="Enviar" class="btn btn-rosa">
+                        </div>
+                    </form>
+                <% } else { %>
+                    <p>Inicia Sesión para Agregar un Comentario</p>
+                <% } %>
+                <!--/formulario-comentarios-->
             </div><!--.comentarios-->
         </div><!--informacion-evento-->
 
