@@ -57,3 +57,25 @@ exports.confirmarAsistencia = async (req, res) => {
          res.send('Has Cancelado tu asistencia');
     }
 }
+
+// muestra el listado de asistentes
+exports.mostrarAsistentes = async (req, res) => {
+    const meeti = await Meeti.findOne({
+        where: { slug : req.params.slug },
+        attributes: ['interesados']
+    });
+
+    // extraer interesados
+    const { interesados } = meeti;
+
+    const asistentes = await Usuarios.findAll({
+        attributes: ['nombre', 'imagen'],
+        where : { id : interesados }
+    });
+
+    // crear la vista y pasar datos
+    res.render('asistentes-meeti', {
+        nombrePagina : 'Listado Asistentes Meeti',
+        asistentes
+    });
+}
