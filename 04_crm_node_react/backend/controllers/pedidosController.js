@@ -41,3 +41,22 @@ exports.mostrarPedido = async (req, res, next) => {
     // mostrar el pedido
     res.json(pedido);
 }
+
+// Actualizar el pedido via ID
+exports.actualizarPedido = async (req, res, next) => {
+    try {
+        let pedido = await Pedidos.findOneAndUpdate({_id : req.params.idPedido}, req.body, {
+            new: true
+        } )
+        .populate('cliente')
+        .populate({
+            path: 'pedido.producto',
+            model: 'Productos'
+        });
+
+        res.json(pedido)
+    } catch (error) {
+        console.log(error);
+        next();
+    }
+}
