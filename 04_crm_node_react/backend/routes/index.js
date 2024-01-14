@@ -64,6 +64,11 @@ module.exports = function() {
     router.post('/pedidos', 
         pedidosController.nuevoPedido
     );
+
+    // mostrar todos los pedidos
+    router.get('/pedidos', 
+        pedidosController.mostrarPedidos
+    );
     
     return router;
 }
