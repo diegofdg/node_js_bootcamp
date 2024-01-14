@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const clienteController = require('../controllers/clienteController');
 const productosController = require('../controllers/productosController');
+const pedidosController = require('../controllers/pedidosController');
 
 module.exports = function() {
     
@@ -56,6 +57,12 @@ module.exports = function() {
     // Eliminar Productos
     router.delete('/productos/:idProducto', 
         productosController.eliminarProducto
+    );
+
+    /*** PEDIDOS */
+    // Agrega nuevos pedidos
+    router.post('/pedidos', 
+        pedidosController.nuevoPedido
     );
     
     return router;
