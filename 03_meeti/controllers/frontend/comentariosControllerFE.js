@@ -31,11 +31,14 @@ exports.eliminarComentario = async (req, res, next ) => {
     }
 
     // verificiar que quien lo borra sea el creador
-    if(comentario.usuarioId === req.user.id){        
-        res.send('Eliminado Correctamente');
+    if(comentario.usuarioId === req.user.id){
+        await Comentarios.destroy({ where: {
+            id : comentario.id
+        }});
+        res.status(200).send('Eliminado Correctamente');
         return next();
     } else {
-        res.send('Acción no válida');
+        res.status(403).send('Acción no válida');
         return next();
     }
 }
