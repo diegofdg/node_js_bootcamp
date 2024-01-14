@@ -18,5 +18,24 @@ exports.agregarComentario = async (req, res, next) => {
 
 // elimina un comentario de la base de datos
 exports.eliminarComentario = async (req, res, next ) => {
-    res.send('Se eliminó...');
+    // Tomar el ID del comentario
+    const { comentarioId } = req.body;
+
+    // Consultar el Comentario
+    const comentario = await Comentarios.findOne({ where : { id : comentarioId }});
+
+    // verificar si existe el comentario
+    if(!comentario) {
+        res.status(404).send('Acción no válida');
+        return next();
+    }
+
+    // verificiar que quien lo borra sea el creador
+    if(comentario.usuarioId === req.user.id){        
+        res.send('Eliminado Correctamente');
+        return next();
+    } else {
+        res.send('Acción no válida');
+        return next();
+    }
 }
