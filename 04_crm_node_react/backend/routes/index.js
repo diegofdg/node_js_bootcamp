@@ -29,6 +29,12 @@ module.exports = function() {
     router.delete('/clientes/:idCliente', 
         clienteController.eliminarCliente
     );
+
+    /** PRODUCTOS */
+    // nuevos productos
+    router.post('/productos',
+        productosController.nuevoProducto
+    );
     
     return router;
 }
