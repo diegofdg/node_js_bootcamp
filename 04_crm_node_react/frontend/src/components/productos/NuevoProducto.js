@@ -10,6 +10,20 @@ function NuevoProducto(props) {
     // archivo = state, guardarArchivo = setState
     const [archivo, guardarArchivo] = useState('');
 
+    // leer los datos del formulario
+    const leerInformacionProducto = e => {
+        guardarProducto({
+            // obtener una copia del state y agregar el nuevo
+            ...producto,
+            [e.target.name] : e.target.value
+        })
+    }
+
+    // coloca la imagen en el state
+    const leerArchivo = e => {
+        guardarArchivo( e.target.files[0] );
+    }
+
     return (
         <Fragment>
             <h2>Nuevo Producto</h2>
@@ -23,6 +37,7 @@ function NuevoProducto(props) {
                         type="text" 
                         placeholder="Nombre Producto" 
                         name="nombre"
+                        onChange={leerInformacionProducto}
                     />
                 </div>
 
@@ -34,6 +49,7 @@ function NuevoProducto(props) {
                         min="0.00" 
                         step="0.01" 
                         placeholder="Precio"
+                        onChange={leerInformacionProducto}
                     />
                 </div>
 
@@ -42,6 +58,7 @@ function NuevoProducto(props) {
                     <input 
                         type="file"  
                         name="imagen"
+                        onChange={leerArchivo}
                     />
                 </div>
 
