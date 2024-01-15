@@ -1,4 +1,7 @@
 import React, { useState, Fragment } from 'react';
+import Swal from 'sweetalert2';
+import clienteAxios from '../../config/axios';
+import { withRouter } from 'react-router-dom';
 
 function NuevoProducto(props) {
 
@@ -9,6 +12,47 @@ function NuevoProducto(props) {
     });
     // archivo = state, guardarArchivo = setState
     const [archivo, guardarArchivo] = useState('');
+
+    // almacena el nuevo producto en la base de datos.
+    const agregarProducto = async e => {
+        e.preventDefault();
+
+        // crear un formdata
+        const formData = new FormData();
+        formData.append('nombre', producto.nombre);
+        formData.append('precio', producto.precio);
+        formData.append('imagen', archivo);
+
+        // almacenarlo en la BD
+        try {
+            const res = await clienteAxios.post('/productos', formData, {
+                headers: {
+                    'Content-Type' : 'multipart/form-data'
+                }
+            } );
+
+            // Lanzar una alerta
+            if(res.status === 200) {
+                Swal.fire(
+                    'Agregado Correctamente',
+                    res.data.mensaje,
+                    'success'
+                )
+            }
+
+            // redireccionar
+            props.history.push('/productos');
+
+        } catch (error) {
+            console.log(error);
+            // lanzar alerta
+            Swal.fire({
+                type:'error',
+                title: 'Hubo un error',
+                text: 'Vuelva a intentarlo'
+            })
+        }
+    }
 
     // leer los datos del formulario
     const leerInformacionProducto = e => {
@@ -28,7 +72,9 @@ function NuevoProducto(props) {
         <Fragment>
             <h2>Nuevo Producto</h2>
 
-            <form>
+            <form
+                onSubmit={agregarProducto}
+            >
                 <legend>Llena todos los campos</legend>
 
                 <div className="campo">
@@ -69,4 +115,4 @@ function NuevoProducto(props) {
         </Fragment>
     )
 }
-export default NuevoProducto;
+export default withRouter(NuevoProducto);
