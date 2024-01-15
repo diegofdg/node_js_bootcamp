@@ -17,6 +17,29 @@ function EditarCliente(props){
         telefono :''
     });
 
+    // Query a la API
+    const consultarAPI = async () => {
+        const clienteConsulta = await clienteAxios.get(`/clientes/${id}`);
+
+       // colocar en el state
+       datosCliente(clienteConsulta.data);
+    }
+
+    // useEffect, cuando el componente carga
+    useEffect( () => {
+        consultarAPI();
+    }, []);
+
+    // leer los datos del formulario
+    const actualizarState = e => {
+        // Almacenar lo que el usuario escribe en el state
+        datosCliente({
+            // obtener una copia del state actual
+            ...cliente, 
+            [e.target.name] : e.target.value
+        })
+    }
+
     // Validar el formulario
     const validarCliente = () => {
         // Destructuring
