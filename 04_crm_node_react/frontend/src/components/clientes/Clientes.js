@@ -1,8 +1,10 @@
 import React, { useEffect, useState, Fragment } from 'react';
-import Cliente from './Cliente';
 import { Link } from 'react-router-dom';
+import Spinner from '../layout/Spinner';
+import Cliente from './Cliente';
 
 // importar cliente axios
+import axios from 'axios';
 import clienteAxios from '../../config/axios';
 
 function Clientes() {
@@ -10,17 +12,42 @@ function Clientes() {
     // clientes = state,  guardarClientes = funcion para guardar el state
     const [ clientes, guardarClientes ] = useState([]);
 
-    // query a la API
-    const consultarAPI = async () => {
-        const clientesConsulta = await clienteAxios.get('/clientes');
-        // colocar el resultado en el state
-        guardarClientes(clientesConsulta.data);
-    }
-
-    // use effect es similar a componentdidmount y willmount
+    // useEffect para consultar api cuando cargue
     useEffect( () => {
-        consultarAPI();        
-    }, [clientes] );
+        // esto es necesario para cerrar la conexión a la api
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        // query a la API
+        const consultarAPI = async () => {
+            try {
+                const clientesConsulta = await clienteAxios.get('/clientes', {
+                    cancelToken: source.token
+                });
+                // colocar el resultado en el state
+                guardarClientes(clientesConsulta.data);
+            } catch (error) {
+                if (!axios.isCancel(error)) {                    
+                    throw error;
+                }
+            }
+        }; 
+        consultarAPI();
+
+        // una vez hecha la consulta, se cierra la conexión 
+        return () => {
+            source.cancel();
+        };
+    }, [clientes]);
+
+
+
+
+
+
+
+
+    if(!clientes.length) return <Spinner /> 
 
     return (
         <Fragment>        

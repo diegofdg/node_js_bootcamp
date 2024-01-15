@@ -1,6 +1,8 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import clienteAxios from '../../config/axios';
+import Spinner from '../layout/Spinner';
 import Producto from './Producto';
 
 function Productos(props) {
@@ -9,15 +11,34 @@ function Productos(props) {
 
     // useEffect para consultar api cuando cargue
     useEffect( () => {
-        // Query a la API
+        // esto es necesario para cerrar la conexión a la api
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
+        // query a la API
         const consultarAPI = async () => {
-            const productosConsulta = await clienteAxios.get('/productos');
-            guardarProductos(productosConsulta.data);
-        }
-        // llamado a la api
+            try {
+                const productosConsulta = await clienteAxios.get('/productos', {
+                    cancelToken: source.token
+                });
+                // colocar el resultado en el state
+                guardarProductos(productosConsulta.data);
+            } catch (error) {
+                if (!axios.isCancel(error)) {                    
+                    throw error;
+                }
+            }
+        }; 
         consultarAPI();
-        
+
+        // una vez hecha la consulta, se cierra la conexión 
+        return () => {
+            source.cancel();
+        };
     }, [productos]);
+
+    // spinner de carga
+    if(!productos.length) return <Spinner /> 
 
     return (
         <Fragment>
