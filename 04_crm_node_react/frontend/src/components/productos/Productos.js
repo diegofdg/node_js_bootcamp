@@ -17,7 +17,7 @@ function Productos(props) {
         // llamado a la api
         consultarAPI();
         
-    }, []);
+    }, [productos]);
 
     return (
         <Fragment>
