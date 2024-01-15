@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import Swal from 'sweetalert2';
+import axios from 'axios';
 import clienteAxios from '../../config/axios';
 import { withRouter } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
@@ -19,17 +20,73 @@ function EditarProductos(props) {
     // archivo = state, guardarArchivo = setState
     const [archivo, guardarArchivo] = useState('');
 
-    // cuando el componente carga
-    useEffect(() => {
-         // consultar la api para traer el producto a editar
-        const consultarAPI = async () => {
-            const productoConsulta = await clienteAxios.get(`/productos/${id}`);
-            guardarProducto(productoConsulta.data);
-            console.log(producto);
-        }
+    useEffect( () => {
+        // esto es necesario para cerrar la conexión a la api
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
 
+        // query a la API
+        const consultarAPI = async () => {
+            try {
+                const productoConsulta = await clienteAxios.get(`/productos/${id}`, {
+                    cancelToken: source.token
+                });
+                // colocar el resultado en el state
+                guardarProducto(productoConsulta.data);
+            } catch (error) {
+                if (!axios.isCancel(error)) {                    
+                    throw error;
+                }
+            }
+        }; 
         consultarAPI();
-    }, []);
+
+        // una vez hecha la consulta, se cierra la conexión 
+        return () => {
+            source.cancel();
+        };
+    }, [id]);
+
+    // Edita un Producto en la base de datos
+    const editarProducto = async e => {
+        e.preventDefault();
+
+        // crear un formdata
+        const formData = new FormData();
+        formData.append('nombre', producto.nombre);
+        formData.append('precio', producto.precio);
+        formData.append('imagen', archivo);
+
+        // almacenarlo en la BD
+        try {
+            const res = await clienteAxios.put(`/productos/${id}`, formData, {
+                headers: {
+                    'Content-Type' : 'multipart/form-data'
+                }
+            } );
+
+            // Lanzar una alerta
+            if(res.status === 200) {
+                Swal.fire(
+                    'Editado Correctamente',
+                    res.data.mensaje,
+                    'success'
+                )
+            }
+
+            // redireccionar
+            props.history.push('/productos');
+
+        } catch (error) {
+            console.log(error);
+            // lanzar alerta
+            Swal.fire({
+                type:'error',
+                title: 'Hubo un error',
+                text: 'Vuelva a intentarlo'
+            })
+        }
+    }
 
     // leer los datos del formulario
     const leerInformacionProducto = e => {
@@ -49,12 +106,14 @@ function EditarProductos(props) {
     const { nombre, precio, imagen } = producto;
 
     if(!nombre) return <Spinner />
-    
+
     return (
         <Fragment>
             <h2>Editar Producto</h2>
 
-            <form>
+            <form
+                onSubmit={editarProducto}
+            >
                 <legend>Llena todos los campos</legend>
 
                 <div className="campo">
