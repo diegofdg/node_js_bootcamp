@@ -28,7 +28,7 @@ function EditarCliente(props){
     // useEffect, cuando el componente carga
     useEffect( () => {
         consultarAPI();
-    }, []);
+    }, );
 
     // leer los datos del formulario
     const actualizarState = e => {
@@ -38,6 +38,33 @@ function EditarCliente(props){
             ...cliente, 
             [e.target.name] : e.target.value
         })
+    }
+
+    // Envia una petición por axios para actualizar el cliente
+    const actualizarCliente = e => {
+        e.preventDefault();
+
+        // enviar petición por axios
+        clienteAxios.put(`/clientes/${cliente._id}`, cliente) 
+            .then(res => {
+                // validar si hay errores de mongo 
+                if(res.data.code === 11000) {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Hubo un error',
+                        text: 'Ese cliente ya esta registrado'
+                    })
+                } else {
+                    Swal.fire(
+                        'Correcto',
+                        'Se actualizó Correctamente',
+                        'success'
+                    )
+                }
+
+                // redireccionar
+                props.history.push('/');
+            })
     }
 
     // Validar el formulario
@@ -56,13 +83,16 @@ function EditarCliente(props){
         <Fragment>
             <h2>Editar Cliente</h2>
             
-            <form>
+            <form
+                onSubmit={actualizarCliente}
+            >
                 <legend>Llena todos los campos</legend>
                 <div className="campo">
                     <label>Nombre:</label>
                     <input  type="text" 
                             placeholder="Nombre Cliente" 
                             name="nombre"
+                            onChange={actualizarState}
                             value={cliente.nombre}
                     />
                 </div>
@@ -72,6 +102,7 @@ function EditarCliente(props){
                     <input type="text" 
                           placeholder="Apellido Cliente" 
                           name="apellido" 
+                          onChange={actualizarState}
                           value={cliente.apellido}
                     />
                 </div>
@@ -81,6 +112,7 @@ function EditarCliente(props){
                     <input type="text" 
                           placeholder="Empresa Cliente" 
                           name="empresa" 
+                          onChange={actualizarState}
                           value={cliente.empresa}
                     />
                 </div>
@@ -90,6 +122,7 @@ function EditarCliente(props){
                     <input type="email" 
                             placeholder="Email Cliente" 
                             name="email" 
+                            onChange={actualizarState}
                             value={cliente.email}
                     />
                 </div>
@@ -99,6 +132,7 @@ function EditarCliente(props){
                     <input type="tel" 
                         placeholder="Teléfono Cliente" 
                         name="telefono" 
+                        onChange={actualizarState}
                         value={cliente.telefono}
                     />
                 </div>
@@ -117,4 +151,4 @@ function EditarCliente(props){
 }
 
 // HOC, es una función que toma un componente y retorna un nuevo componente
-export default  withRouter(EditarCliente);
+export default  withRouter(EditarCliente);
