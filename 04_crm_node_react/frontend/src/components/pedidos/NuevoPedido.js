@@ -1,6 +1,7 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import clienteAxios from '../../config/axios';
 import FormBuscarProducto from './FormBuscarProducto';
+import FormCantidadProducto from './FormCantidadProducto';
 import Swal from 'sweetalert2';
 
 function NuevoPedido(props) {
@@ -10,6 +11,7 @@ function NuevoPedido(props) {
     // state
     const [cliente, guardarCliente] = useState({});
     const [busqueda, guardarBusqueda] = useState('');
+    const [productos, guardarProductos] = useState([]);
 
     useEffect(() => {
 
@@ -33,7 +35,13 @@ function NuevoPedido(props) {
 
         // si no hay resultados una alerta, contrario agregarlo al state
         if(resultadoBusqueda.data[0]) {
-            
+            let productoResultado = resultadoBusqueda.data[0];
+            // agregar la llave "producto" (copia de id)
+            productoResultado.producto = resultadoBusqueda.data[0]._id;
+            productoResultado.cantidad = 0;
+
+            // ponerlo en el state
+            guardarProductos([...productos, productoResultado]);            
         } else {
             // no hay resultados
             Swal.fire({
@@ -63,63 +71,10 @@ function NuevoPedido(props) {
                 leerDatosBusqueda={leerDatosBusqueda}
             />
 
-            <div class="campo">
-                <label>Productos:</label>
-                <input type="text" placeholder="Nombre Productos" name="productos" />
-            </div>
-
             <ul className="resumen">
-                <li>
-                    <div className="texto-producto">
-                        <p className="nombre">Macbook Pro</p>
-                        <p className="precio">$250</p>
-                    </div>
-                    <div className="acciones">
-                        <div className="contenedor-cantidad">
-                            <i className="fas fa-minus"></i>
-                            <input type="text" name="cantidad" />
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button type="button" className="btn btn-rojo">
-                            <i className="fas fa-minus-circle"></i>
-                                Eliminar Producto
-                        </button>
-                    </div>
-                </li>
-                <li>
-                    <div className="texto-producto">
-                        <p className="nombre">Macbook Pro</p>
-                        <p className="precio">$250</p>
-                    </div>
-                    <div className="acciones">
-                        <div className="contenedor-cantidad">
-                            <i className="fas fa-minus"></i>
-                            <input type="text" name="cantidad" />
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button type="button" className="btn btn-rojo">
-                            <i className="fas fa-minus-circle"></i>
-                                Eliminar Producto
-                        </button>
-                    </div>
-                </li>
-                <li>
-                    <div className="texto-producto">
-                        <p className="nombre">Macbook Pro</p>
-                        <p className="precio">$250</p>
-                    </div>
-                    <div className="acciones">
-                        <div className="contenedor-cantidad">
-                            <i className="fas fa-minus"></i>
-                            <input type="text" name="cantidad" />
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button type="button" className="btn btn-rojo">
-                            <i className="fas fa-minus-circle"></i>
-                                Eliminar Producto
-                        </button>
-                    </div>
-                </li>
+                {productos.map((producto, index) => (
+                    <FormCantidadProducto />
+                ))}
             </ul>
             <div className="campo">
                 <label>Total:</label>
