@@ -5,6 +5,9 @@ const productosController = require('../controllers/productosController');
 const pedidosController = require('../controllers/pedidosController');
 const usuariosController = require('../controllers/usuariosController');
 
+// middle para proteger las rutas
+const auth = require('../middleware/auth');
+
 module.exports = function() {
     
     // Agrega nuevos clientes via POST
