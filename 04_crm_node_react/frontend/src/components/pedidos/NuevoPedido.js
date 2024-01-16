@@ -12,6 +12,7 @@ function NuevoPedido(props) {
     const [cliente, guardarCliente] = useState({});
     const [busqueda, guardarBusqueda] = useState('');
     const [productos, guardarProductos] = useState([]);
+    const [total, guardarTotal] = useState(0);
 
     useEffect(() => {
 
@@ -24,8 +25,11 @@ function NuevoPedido(props) {
 
         // llamar a la api
         consultarAPI();
+
+        // actualizar el total a pagar
+        actualizarTotal();
         
-    }, [id]);
+    }, [productos]);
 
     const buscarProducto = async e => {
         e.preventDefault();
@@ -83,6 +87,24 @@ function NuevoPedido(props) {
        guardarProductos(todosProductos);
     }
 
+    // Actualizar el total a pagar
+    const actualizarTotal = () => {
+        // si el arreglo de productos es igual 0: el total es 0
+        if(productos.length === 0) {
+            guardarTotal(0);
+            return;
+        }
+
+        // calcular el nuevo total
+        let nuevoTotal = 0;
+
+        // recorrer todos los productos, sus cantidades y precios
+        productos.map(producto => nuevoTotal += (producto.cantidad * producto.precio)  );
+
+        // almacenar el Total
+        guardarTotal(nuevoTotal);
+    }
+
     return (
         <Fragment>
             <h2>Nuevo Pedido</h2>
@@ -108,13 +130,16 @@ function NuevoPedido(props) {
                     />
                 ))}
             </ul>
-            <div className="campo">
-                <label>Total:</label>
-                <input type="number" name="precio" placeholder="Precio" readOnly="readonly" />
-            </div>
-            <div className="enviar">
-                <input type="submit" className="btn btn-azul" value="Agregar Pedido" />
-            </div>            
+            <p className="total">Total a Pagar: <span>$ {total}</span> </p>
+                { total > 1 ? (
+                    <form>
+                        <input
+                            type="submit"
+                            className="btn btn-verde btn-block"
+                            value="Realizar Pedido" 
+                        />
+                    </form>
+                ) : null }
         </Fragment>
     )
 }
