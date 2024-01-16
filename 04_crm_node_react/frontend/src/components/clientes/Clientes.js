@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
 import Cliente from './Cliente';
 
@@ -10,12 +10,13 @@ import clienteAxios from '../../config/axios';
 // import el Context
 import { CRMContext } from '../../context/CRMContext';
 
-function Clientes() {
+function Clientes(props) {
     // Trabajar con el state
     // clientes = state,  guardarClientes = funcion para guardar el state
     const [ clientes, guardarClientes ] = useState([]);
 
     // utilizar valores del context
+    // eslint-disable-next-line
     const [auth, guardarAuth ] = useContext( CRMContext );
 
     // useEffect para consultar api cuando cargue
@@ -24,34 +25,43 @@ function Clientes() {
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
-        // query a la API
-        const consultarAPI = async () => {
-            try {
-                const clientesConsulta = await clienteAxios.get('/clientes', {
-                    cancelToken: source.token
-                });
-                // colocar el resultado en el state
-                guardarClientes(clientesConsulta.data);
-            } catch (error) {
-                if (!axios.isCancel(error)) {                    
-                    throw error;
+        if(auth.token !== '') {
+            // query a la API
+            const consultarAPI = async () => {
+                try {
+                    const clientesConsulta = await clienteAxios.get('/clientes', 
+                    { 
+                        cancelToken: source.token
+                    },
+                    {
+                        headers: {
+                            Authorization : `Bearer ${auth.token}`
+                        }
+                    });
+                    // colocar el resultado en el state
+                    guardarClientes(clientesConsulta.data);
+                } catch (error) {
+                    if (!axios.isCancel(error)) {                    
+                        throw error;
+                    }
                 }
-            }
-        }; 
-        consultarAPI();
-
-        // una vez hecha la consulta, se cierra la conexión 
-        return () => {
-            source.cancel();
-        };
+            }; 
+            consultarAPI();
+    
+            // una vez hecha la consulta, se cierra la conexión 
+            return () => {
+                source.cancel();
+            };
+        } else {
+            props.history.push('/iniciar-sesion');
+        }
+    // eslint-disable-next-line
     }, [clientes]);
 
-
-
-
-
-
-
+    // Si el state esta como false
+    if(!auth.auth) {
+        props.history.push('/iniciar-sesion');
+    }
 
     if(!clientes.length) return <Spinner /> 
 
@@ -73,4 +83,4 @@ function Clientes() {
         </Fragment>
     )
 }
-export default Clientes;
+export default withRouter(Clientes);

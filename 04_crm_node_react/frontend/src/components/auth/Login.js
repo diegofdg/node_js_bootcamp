@@ -8,6 +8,7 @@ import { CRMContext } from '../../context/CRMContext';
 
 function Login(props){
     // Auth y token
+    // eslint-disable-next-line
     const [auth, guardarAuth] = useContext(CRMContext);
 
     // State con los datos del formulario
