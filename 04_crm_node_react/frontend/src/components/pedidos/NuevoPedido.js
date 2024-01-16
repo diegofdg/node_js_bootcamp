@@ -14,7 +14,7 @@ function NuevoPedido(props) {
     const [busqueda, guardarBusqueda] = useState('');
     const [productos, guardarProductos] = useState([]);
     const [total, guardarTotal] = useState(0);
-
+    
     useEffect(() => {
 
         // obtener el cliente
@@ -29,7 +29,7 @@ function NuevoPedido(props) {
 
         // actualizar el total a pagar
         actualizarTotal();
-        
+        // eslint-disable-next-line
     }, [productos]);
 
     const buscarProducto = async e => {
