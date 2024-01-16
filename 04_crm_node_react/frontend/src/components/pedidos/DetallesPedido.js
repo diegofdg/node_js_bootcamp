@@ -1,33 +1,34 @@
 import React from 'react';
 
-function DetallesPedido() {
+function DetallesPedido({pedido}) {
+
+    const {cliente} = pedido;
 
     return(
-        <li class="pedido">
-            <div class="info-pedido">
-                <p class="id">ID: 0192019201291201</p>
-                <p class="nombre">Cliente: Juan Pablo De la torre</p>
+        <li className="pedido">
+            <div className="info-pedido">
+                <p className="id">ID: 0192019201291201</p>
+                <p className="nombre">Cliente: {cliente.nombre} {cliente.apellido} </p>
 
-                <div class="articulos-pedido">
-                    <p class="productos">Artículos Pedido: </p>
+                <div className="articulos-pedido">
+                    <p className="productos">Artículos Pedido: </p>
                     <ul>
-                        <li>
-                            <p>Macbook Pro</p>
-                            <p>Precio: $3000</p>
-                            <p>Cantidad: 4</p>
-                        </li>
-                        <li>
-                            <p>Macbook Pro</p>
-                            <p>Precio: $3000</p>
-                            <p>Cantidad: 4</p>
-                        </li>
+                        {pedido.pedido.map(articulos => (
+                            <li key={pedido._id+articulos.producto._id}>
+                                <p>{articulos.producto.nombre} </p>
+                                <p>Precio: ${articulos.producto.precio} </p>
+                                <p>Cantidad: {articulos.cantidad}</p>
+                            </li>
+                        ))}
                     </ul>
                 </div>
-                <p class="total">Total: $3,500 </p>
+
+                <p className="total">Total: ${pedido.total} </p>
+
             </div>
-            <div class="acciones">
-                <button type="button" class="btn btn-rojo btn-eliminar">
-                    <i class="fas fa-times"></i>
+            <div className="acciones">
+                <button type="button" className="btn btn-rojo btn-eliminar">
+                    <i className="fas fa-times"></i>
                     Eliminar Pedido
                 </button>
             </div>
