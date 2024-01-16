@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // Definir un dominio para recibir las peticiones
-const whiteList = ['http://localhost:3000'];
+const whiteList = [process.env.FRONTEND_URL];
 const corsOptions = {
     origin: (origin, callback) => {
         // Revisar si la petición viene de un servidor que está en la whiteList
