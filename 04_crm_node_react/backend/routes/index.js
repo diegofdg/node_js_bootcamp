@@ -59,6 +59,11 @@ module.exports = function() {
         productosController.eliminarProducto
     );
 
+    // Busqueda de Productos
+    router.post('/productos/busqueda/:query',
+        productosController.buscarProducto
+    );
+
     /*** PEDIDOS */
     // Agrega nuevos pedidos
     router.post('/pedidos', 
