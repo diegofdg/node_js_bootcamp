@@ -73,7 +73,11 @@ function NuevoPedido(props) {
 
             <ul className="resumen">
                 {productos.map((producto, index) => (
-                    <FormCantidadProducto />
+                    <FormCantidadProducto 
+                        key={producto.producto}
+                        producto={producto}
+                        index={index}
+                    />
                 ))}
             </ul>
             <div className="campo">

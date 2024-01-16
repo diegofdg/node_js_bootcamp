@@ -1,21 +1,32 @@
 import React from 'react';
 
-function FormCantidadProducto() {
+function FormCantidadProducto(props) {
+
+    const {producto } = props;
 
     return(
         <li>
-            <div class="texto-producto">
-                <p class="nombre">Macbook Pro</p>
-                <p class="precio">$250</p>
+            <div className="texto-producto">
+                <p className="nombre">{producto.nombre}</p>
+                <p className="precio">$ {producto.precio}</p>
             </div>
-            <div class="acciones">
-                <div class="contenedor-cantidad">
-                    <i class="fas fa-minus"></i>
-                    <input type="text" name="cantidad" />
-                    <i class="fas fa-plus"></i>
+            <div className="acciones">
+                <div className="contenedor-cantidad">
+                    <i 
+                        className="fas fa-minus"
+                    ></i>
+
+                    <p>{producto.cantidad}</p>
+
+                    <i 
+                        className="fas fa-plus"
+                    ></i>
                 </div>
-                <button type="button" class="btn btn-rojo">
-                    <i class="fas fa-minus-circle"></i>
+                <button 
+                    type="button" 
+                    className="btn btn-rojo"
+                >
+                    <i className="fas fa-minus-circle"></i>
                         Eliminar Producto
                 </button>
             </div>
