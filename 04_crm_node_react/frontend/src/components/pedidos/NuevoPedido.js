@@ -3,6 +3,7 @@ import clienteAxios from '../../config/axios';
 import FormBuscarProducto from './FormBuscarProducto';
 import FormCantidadProducto from './FormCantidadProducto';
 import Swal from 'sweetalert2';
+import { withRouter } from 'react-router-dom';
 
 function NuevoPedido(props) {
     // extraer ID de cliente
@@ -112,6 +113,45 @@ function NuevoPedido(props) {
         guardarTotal(nuevoTotal);
     }
 
+    // Almacena el pedido en la BD
+    const realizarPedido = async e => {
+        e.preventDefault();
+
+        // extraer el ID
+        const { id } = props.match.params;
+
+        // construir el objeto
+        const pedido = {
+            "cliente" : id, 
+            "pedido" : productos, 
+            "total" : total
+        }
+
+        // almacenarlo en la BD
+        const resultado = await clienteAxios.post(`/pedidos/nuevo/${id}`, pedido);
+
+        // leer resultado
+        if(resultado.status === 200) {
+            // alerta de todo bien
+            Swal.fire({
+                type: 'success',
+                title: 'Correcto',
+                text: resultado.data.mensaje
+            })
+        } else {
+            // alerta de error
+            Swal.fire({
+                type: 'error',
+                title: 'Hubo un Error',
+                text: 'Vuelva a intentarlo'
+            })
+        }
+
+        // redireccionar
+        props.history.push('/pedidos');
+
+    }
+
     return (
         <Fragment>
             <h2>Nuevo Pedido</h2>
@@ -140,7 +180,9 @@ function NuevoPedido(props) {
             </ul>
             <p className="total">Total a Pagar: <span>$ {total}</span> </p>
                 { total > 1 ? (
-                    <form>
+                    <form
+                        onSubmit={realizarPedido}
+                    >
                         <input
                             type="submit"
                             className="btn btn-verde btn-block"
@@ -151,4 +193,4 @@ function NuevoPedido(props) {
         </Fragment>
     )
 }
-export default NuevoPedido;
+export default withRouter(NuevoPedido);
