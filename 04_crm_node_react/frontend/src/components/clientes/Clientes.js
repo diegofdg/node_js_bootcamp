@@ -20,41 +20,45 @@ function Clientes(props) {
     const [auth, guardarAuth ] = useContext( CRMContext );
 
     // useEffect para consultar api cuando cargue
-    useEffect( () => {
-        // esto es necesario para cerrar la conexión a la api
+    useEffect( () => {        
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
         if(auth.token !== '') {
+            // esto es necesario para cerrar la conexión a la api
             // query a la API
             const consultarAPI = async () => {
                 try {
                     const clientesConsulta = await clienteAxios.get('/clientes', 
-                    { 
-                        cancelToken: source.token
-                    },
                     {
                         headers: {
                             Authorization : `Bearer ${auth.token}`
                         }
+                    },
+                    { 
+                        cancelToken: source.token
                     });
                     // colocar el resultado en el state
                     guardarClientes(clientesConsulta.data);
+                    
                 } catch (error) {
                     if (!axios.isCancel(error)) {                    
                         throw error;
-                    }
+                    } else if (error.response.status === 500) {
+                        props.history.push('/iniciar-sesion');
+                    } 
                 }
             }; 
             consultarAPI();
-    
             // una vez hecha la consulta, se cierra la conexión 
             return () => {
                 source.cancel();
             };
+            
         } else {
             props.history.push('/iniciar-sesion');
         }
+        
     // eslint-disable-next-line
     }, [clientes]);
 

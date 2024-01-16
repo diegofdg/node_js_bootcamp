@@ -1,9 +1,16 @@
-import React, { Fragment, useState } from 'react';
+import React, {Fragment, useState, useContext} from 'react';
 import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom'; 
 import clienteAxios from '../../config/axios';
 
+// import el Context
+import { CRMContext } from '../../context/CRMContext';
+
 function NuevoCliente({history}){
+    // utilizar valores del context
+    // eslint-disable-next-line
+    const [auth, guardarAuth ] = useContext( CRMContext );
+
     // cliente = state, guardarcliente = funcion para guardar el state
     const[cliente, guardarCliente] = useState({
         nombre: '',
@@ -28,7 +35,11 @@ function NuevoCliente({history}){
         e.preventDefault();
 
         // enviar petición
-        clienteAxios.post('/clientes', cliente)
+        clienteAxios.post('/clientes', cliente, {
+            headers: {
+                Authorization : `Bearer ${auth.token}`
+            }
+        })        
             .then(res => {
                 // validar si hay errores de mongo 
                 if(res.data.code === 11000) {
@@ -59,6 +70,11 @@ function NuevoCliente({history}){
 
         // return true o false
         return valido;
+    }
+
+    // verificar si el usuario esta autenticado o no
+    if(!auth.auth && (localStorage.getItem('token') === auth.token ) ) {
+        history.push('/iniciar-sesion');
     }
 
     return (

@@ -1,7 +1,10 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, { useEffect, useState, useContext, Fragment } from 'react';
 import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom'; 
 import clienteAxios from '../../config/axios';
+
+// import el Context
+import { CRMContext } from '../../context/CRMContext';  
 
 function EditarCliente(props){
 
@@ -17,18 +20,32 @@ function EditarCliente(props){
         telefono :''
     });
 
-    // Query a la API
-    const consultarAPI = async () => {
-        const clienteConsulta = await clienteAxios.get(`/clientes/${id}`);
+    // utilizar valores del context
+    // eslint-disable-next-line
+    const [auth, guardarAuth ] = useContext( CRMContext );
 
-       // colocar en el state
-       datosCliente(clienteConsulta.data);
-    }
-
+    
     // useEffect, cuando el componente carga
     useEffect( () => {
-        consultarAPI();
-    }, );
+        // Query a la API
+        if(auth.token !== '') {
+            const consultarAPI = async () => {
+                const clienteConsulta = await clienteAxios.get(`/clientes/${id}`, 
+                {
+                    headers: {
+                        Authorization : `Bearer ${auth.token}`
+                    }
+                });
+        
+               // colocar en el state
+               datosCliente(clienteConsulta.data);
+            }
+            consultarAPI();
+        } else {
+            props.history.push('/iniciar-sesion');
+        }
+    // eslint-disable-next-line
+    }, []);
 
     // leer los datos del formulario
     const actualizarState = e => {
@@ -45,7 +62,11 @@ function EditarCliente(props){
         e.preventDefault();
 
         // enviar petición por axios
-        clienteAxios.put(`/clientes/${cliente._id}`, cliente) 
+        clienteAxios.put(`/clientes/${cliente._id}`, cliente, {
+            headers: {
+                Authorization : `Bearer ${auth.token}`
+            }
+        }) 
             .then(res => {
                 // validar si hay errores de mongo 
                 if(res.data.code === 11000) {
